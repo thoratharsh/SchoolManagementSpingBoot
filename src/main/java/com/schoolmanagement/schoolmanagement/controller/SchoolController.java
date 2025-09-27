@@ -1,11 +1,12 @@
 package com.schoolmanagement.schoolmanagement.controller;
 
-import com.schoolmanagement.schoolmanagement.dao.School;
+import com.schoolmanagement.schoolmanagement.dao.SchoolDao;
 import com.schoolmanagement.schoolmanagement.repository.SchoolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,15 +18,15 @@ public class SchoolController {
     private SchoolRepository schoolRepository;
 
     @GetMapping("/allSchools")
-    public List<School> getAllSchools(){
-        return schoolRepository.getAllSchools();
+    public List<SchoolDao> getAllSchools(){
+        return schoolRepository.findAll();
     }
 
 
     @PostMapping("/school")
     @ResponseStatus(HttpStatus.CREATED)
-    public School createSchool(@RequestBody School school){
-        schoolRepository.addSchool(school);
+    public SchoolDao createSchool(@RequestBody SchoolDao school){
+        schoolRepository.save(school);
         return school;
     }
 
@@ -33,16 +34,18 @@ public class SchoolController {
     @DeleteMapping("/school/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public String deleteSchool(@PathVariable Integer id){
-        Optional<School> school = schoolRepository.getSchool(id);
-        school.ifPresent(value -> schoolRepository.removeSchool(value));
-        return "Deleted";
+        Optional<SchoolDao> school = schoolRepository.findById(id);
+        if (school.isPresent()){
+            schoolRepository.deleteById(id);
+        }
+        return "Done";
     }
 
     @GetMapping("/school/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public School getSchool(@PathVariable Integer id){
-       Optional<School> school =  schoolRepository.getSchool(id);
-        return school.orElseGet(() -> new School(-1, "Not found", "not found"));
+    public SchoolDao getSchool(@PathVariable Integer id){
+       Optional<SchoolDao> school =  schoolRepository.findById(id);
+       return school.orElseGet(() -> (SchoolDao) Collections.emptyList());
     }
 
 }

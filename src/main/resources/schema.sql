@@ -1,0 +1,22 @@
+CREATE TABLE SCHOOL (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    address VARCHAR(255)
+);
+
+CREATE TABLE FACULTY (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    role VARCHAR(255),
+    school_id INT,
+    CONSTRAINT fk_faculty_school FOREIGN KEY (school_id) REFERENCES SCHOOL(id)
+);
+
+CREATE TABLE STUDENT (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    address VARCHAR(255),
+    class_name VARCHAR(255),
+    school_id INT,
+    CONSTRAINT fk_student_school FOREIGN KEY (school_id) REFERENCES SCHOOL(id)
+);
