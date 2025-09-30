@@ -1,14 +1,26 @@
 package com.schoolmanagement.schoolmanagement.dao;
 
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
-@AllArgsConstructor
+import java.util.List;
+
 @Getter
-@Setter
+@Entity(name = "SCHOOL")
 public class School {
-    private int id;
-    private String name;
-    private String address;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer id;
+
+    public String name;
+
+    public String address;
+
+    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<Student> students;
+
+    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<Faculty> faculty;
+
 }

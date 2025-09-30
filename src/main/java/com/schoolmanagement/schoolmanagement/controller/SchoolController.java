@@ -1,6 +1,6 @@
 package com.schoolmanagement.schoolmanagement.controller;
 
-import com.schoolmanagement.schoolmanagement.dao.SchoolDao;
+import com.schoolmanagement.schoolmanagement.dao.School;
 import com.schoolmanagement.schoolmanagement.repository.SchoolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,41 +11,41 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/school/")
+@RequestMapping("/school")
 public class SchoolController {
 
     @Autowired
     private SchoolRepository schoolRepository;
 
-    @GetMapping("/allSchools")
-    public List<SchoolDao> getAllSchools(){
+    @GetMapping("/all")
+    public List<School> getAllSchools(){
         return schoolRepository.findAll();
     }
 
 
-    @PostMapping("/school")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public SchoolDao createSchool(@RequestBody SchoolDao school){
+    public School createSchool(@RequestBody School school){
         schoolRepository.save(school);
         return school;
     }
 
 
-    @DeleteMapping("/school/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public String deleteSchool(@PathVariable Integer id){
-        Optional<SchoolDao> school = schoolRepository.findById(id);
+        Optional<School> school = schoolRepository.findById(id);
         if (school.isPresent()){
             schoolRepository.deleteById(id);
         }
         return "Done";
     }
 
-    @GetMapping("/school/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public SchoolDao getSchool(@PathVariable Integer id){
-       Optional<SchoolDao> school =  schoolRepository.findById(id);
-       return school.orElseGet(() -> (SchoolDao) Collections.emptyList());
+    public School getSchool(@PathVariable Integer id){
+       Optional<School> school =  schoolRepository.findById(id);
+       return school.orElseGet(() -> (School) Collections.emptyList());
     }
 
 }
