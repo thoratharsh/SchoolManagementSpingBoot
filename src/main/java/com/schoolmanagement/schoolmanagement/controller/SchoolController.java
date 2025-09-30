@@ -2,6 +2,7 @@ package com.schoolmanagement.schoolmanagement.controller;
 
 import com.schoolmanagement.schoolmanagement.dao.School;
 import com.schoolmanagement.schoolmanagement.repository.SchoolRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ public class SchoolController {
     private SchoolRepository schoolRepository;
 
     @GetMapping("/all")
+    @Operation(summary = "Get All Schools")
     public List<School> getAllSchools(){
         return schoolRepository.findAll();
     }
@@ -25,6 +27,7 @@ public class SchoolController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Create School")
     public School createSchool(@RequestBody School school){
         schoolRepository.save(school);
         return school;
@@ -33,6 +36,7 @@ public class SchoolController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
+    @Operation(summary = "Delete School")
     public String deleteSchool(@PathVariable Integer id){
         Optional<School> school = schoolRepository.findById(id);
         if (school.isPresent()){
@@ -43,6 +47,7 @@ public class SchoolController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get School")
     public School getSchool(@PathVariable Integer id){
        Optional<School> school =  schoolRepository.findById(id);
        return school.orElseGet(() -> (School) Collections.emptyList());
