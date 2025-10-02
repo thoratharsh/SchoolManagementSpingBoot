@@ -14,6 +14,7 @@ public class SwaggerConfig {
                 new Info()
                         .description("School Management System")
                         .title("School Management System")
+                        .version("1.0.0")
         );
     }
 }
